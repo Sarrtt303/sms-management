@@ -1,54 +1,5 @@
-graph TB
-    subgraph Frontend["Frontend Dashboard"]
-        UI[Web Interface]
-        WS[WebSocket Client]
-    end
 
-    subgraph Backend["Backend Services"]
-        API[API Gateway]
-        Auth[Auth Service]
-        PM[Process Manager]
-        MM[Metrics Manager]
-        CM[Config Manager]
-        AM[Alert Manager]
-    end
-
-    subgraph Data["Data Storage"]
-        DB[(PostgreSQL)]
-        Redis[(Redis Cache)]
-    end
-
-    subgraph SMS["SMS Processing"]
-        P1[Program 1]
-        P2[Program 2]
-        P3[Program 3]
-        PN[Program N]
-    end
-
-    subgraph External["External Services"]
-        SMSGateway[SMS Gateway API]
-        TBot[Telegram Bot]
-    end
-
-    UI --> API
-    WS --> API
-    API --> Auth
-    API --> PM
-    API --> MM
-    API --> CM
-    API --> AM
-    
-    PM --> SMS
-    SMS --> SMSGateway
-    AM --> TBot
-    
-    MM --> Redis
-    CM --> DB
-    Auth --> DB
-
-    # SMS Dashboard System Technical Specification
-
-    ![alt text](<Screenshot 2024-10-22 180222.png>)
+![alt text](<Screenshot 2024-10-22 180222.png>)
 
 ## 1. System Components
 
