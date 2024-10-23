@@ -1,0 +1,58 @@
+# Python Bytecode
+__pycache__/
+*.py[cod]
+
+# Flask specific
+instance/
+.webassets-cache
+*.egg-info/
+*.egg
+*.pyc
+*.pyo
+*.pyd
+
+# Environment Variables
+.env
+*.env
+
+# Database files
+*.sqlite3
+*.db
+*.db-journal
+*.tgz
+*.tar.gz
+
+# IDE and Editor directories
+.vscode/
+.idea/
+*.swp
+*.swo
+*.sublime-project
+*.sublime-workspace
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+
+# Jupyter Notebook Checkpoints
+.ipynb_checkpoints
+
+# Coverage reports
+.coverage
+coverage.xml
+*.cover
+.hypothesis/
+.pytest_cache/
+nosetests.xml
+
+# Misc
+*.DS_Store
+Thumbs.db
+
+# Other files
+*.pot
+*.po
+*.mo

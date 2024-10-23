@@ -1,24 +1,38 @@
 from flask import Flask
-from flask_sqlalchemy import SQLAlchemy
 from flask_jwt_extended import JWTManager
-from flask_migrate import Migrate
+from flask_pymongo import PyMongo
 from config import Config
+import logging
 
-db = SQLAlchemy()
+# Initialize PyMongo
+mongo = PyMongo()
+
+# Initialize JWT
 jwt = JWTManager()
-migrate = Migrate()
 
 def create_app():
     app = Flask(__name__)
+
+    # Load config
     app.config.from_object(Config)
 
     # Initialize extensions
-    db.init_app(app)
+    mongo.init_app(app)
     jwt.init_app(app)
-    migrate.init_app(app, db)
+
+    # Check MongoDB connection
+    try:
+        # Test the MongoDB connection by executing a command
+        mongo.cx.server_info()  # This checks if the MongoDB server is accessible
+        logging.info("Successfully connected to MongoDB")
+    except Exception as e:
+        logging.error(f"Failed to connect to MongoDB: {e}")
+        raise e  # Raise the error so the app doesn't proceed without a DB connection
 
     # Register blueprints
     from app.api.routes import api_bp
-    app.register_blueprint(api_bp, url_prefix='/api/v1')
+    from app.api.auth import auth_bp
+    app.register_blueprint(api_bp, url_prefix='/api')
+    app.register_blueprint(auth_bp, url_prefix='/auth')
 
     return app

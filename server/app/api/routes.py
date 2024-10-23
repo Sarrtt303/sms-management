@@ -2,8 +2,9 @@ from flask import Blueprint, jsonify, request
 from flask_jwt_extended import jwt_required
 from app.services.sms_service import SMSService
 from app.services.process_manager import ProcessManager
-from app.models.sms import SMS
-from app import db
+from app.models.sms import SMS  # Import your SMS model, if needed
+from app import mongo  # Import mongo from your app setup
+import datetime
 
 api_bp = Blueprint('api', __name__)
 
@@ -19,6 +20,14 @@ def send_sms():
     result = sms_service.send_otp()
     
     if result['success']:
+        # Save SMS to MongoDB if needed
+        sms_record = {
+            "phone_number": data['phone_number'],
+            "status": result['message'],  # Assuming result has a message field
+            "created_at": datetime.utcnow()
+        }
+        mongo.db.sms_messages.insert_one(sms_record)  # Insert into MongoDB collection
+
         return jsonify(result), 200
     return jsonify(result), 500
 

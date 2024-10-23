@@ -1,16 +1,21 @@
-from app import db
 from werkzeug.security import generate_password_hash, check_password_hash
+from app import mongo
 
-class User(db.Model):
-    __tablename__ = 'users'
-    
-    id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(64), unique=True, nullable=False)
-    password_hash = db.Column(db.String(256))
-    role = db.Column(db.String(20))
+class User:
+    @staticmethod
+    def create_user(username, password, role='user'):
+        user_data = {
+            "username": username,
+            "password_hash": generate_password_hash(password),
+            "role": role
+        }
+        result = mongo.db.users.insert_one(user_data)
+        return str(result.inserted_id)  # Return the ID of the inserted document
 
-    def set_password(self, password):
-        self.password_hash = generate_password_hash(password)
+    @staticmethod
+    def find_by_username(username):
+        return mongo.db.users.find_one({"username": username})
 
-    def check_password(self, password):
-        return check_password_hash(self.password_hash, password)
+    @staticmethod
+    def check_password(stored_hash, password):
+        return check_password_hash(stored_hash, password)
