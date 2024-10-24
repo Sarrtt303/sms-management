@@ -11,6 +11,9 @@ instance/
 *.pyo
 *.pyd
 
+# Virtual environment
+venv/
+
 # Environment Variables
 .env
 *.env
